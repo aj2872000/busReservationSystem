@@ -7,7 +7,7 @@ import {
   cancelTicketRequest, cancelTicketSuccess, cancelTicketFailure
 } from "./busSlice";
 
-const API_URL = "http://localhost:5000";
+const API_URL = "https://busreservationsystem-851s.onrender.com"
 
 function* fetchBusesSaga() {
   try {
