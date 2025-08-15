@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import SeatLayout from "../components/SeatLayout";
 import { bookTicketRequest, cancelTicketRequest } from "../store/busSlice";
+import "./SeatsPage.css"
 
 const SeatsPage = () => {
   const { busId } = useParams();
@@ -29,16 +30,16 @@ const SeatsPage = () => {
   if (loading) return <p>Loading buses...</p>;
 
   return (
-    <section>
-      <h2>{bus.name} ({bus.source} → {bus.destination})</h2>
-      <SeatLayout
-        totalSeats={bus.total_seats}
-        availableSeats={bus.available_seats}
-        bookedSeats={othersBookedSeatss}
-        mySeat={myBookedSeatss}
-        available_seat_numbers={bus.available_seat_numbers}
-        onSeatClick={handleSeatClick}
-      />
+    <section className="bus-seat-section">
+        <h2>{bus.name} ({bus.source} → {bus.destination})</h2>
+        <SeatLayout
+          totalSeats={bus.total_seats}
+          availableSeats={bus.available_seats}
+          bookedSeats={othersBookedSeatss}
+          mySeat={myBookedSeatss}
+          available_seat_numbers={bus.available_seat_numbers}
+          onSeatClick={handleSeatClick}
+        />
     </section>
   );
 };

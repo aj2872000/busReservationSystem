@@ -1,23 +1,26 @@
 import React from "react";
 import { FaChair } from "react-icons/fa";
+import "./SeatLayout.css"
 
 const SeatLayout = ({ totalSeats, availableSeats, bookedSeats, mySeat, available_seat_numbers, onSeatClick }) => {
   const seats = available_seat_numbers;
 
+  const getSeatClass = (seatNum) => {
+    if (mySeat.includes(seatNum)) return "seat seat-my-booking";
+    if (bookedSeats.includes(seatNum)) return "seat seat-booked";
+    return "seat seat-available";
+  };
+
   return (
     <div className="seat-layout">
       {seats.map((seat) => {
-        console.log('ajay18',seat,bookedSeats)
-        let className = "seat available";
-        if (mySeat.includes(seat)) className = "seat my-seat";
-        else if (bookedSeats.includes(seat)) className = "seat booked";
-
+        let className = getSeatClass(seat);
         return (
           <div
             key={seat}
             className={className}
             onClick={() => {
-              if (className !== "seat booked" || className === "seat my-seat") {
+              if (className !== "seat seat-booked" || className === "seat seat-my-booking") {
                 onSeatClick(seat);
               }
             }}

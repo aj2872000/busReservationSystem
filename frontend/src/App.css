@@ -1,130 +1,48 @@
-/* Global Styles
-body {
-  font-family: 'Segoe UI', Arial, sans-serif;
-  background-color: #f4f7fb;
+
+* {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
 }
 
-h1, h2 {
-  color: #333;
-  text-align: center;
-}
-
-section {
-  background: white;
-  padding: 20px;
-  margin: 20px auto;
-  border-radius: 8px;
-  max-width: 800px;
-  box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
-}
-
-/* Table Styling */
-.table-container {
-  overflow-x: auto;
-}
-
-table {
-  border-collapse: collapse;
+body {
+  /* font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  background-color: #f5f7fa;
+  color: #333; */
   width: 100%;
-  background: white;
 }
 
-table th, table td {
-  padding: 12px 15px;
-  text-align: left;
-  border-bottom: 1px solid #eaeaea;
-}
-
-table th {
-  background: #007bff;
-  color: white;
-}
-
-table tr:hover {
-  background: #f1f1f1;
-}
-
-/* Form Styling */
-form {
+.app-container {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  min-height: 100vh;
+  width: 100%;
 }
 
-input, select {
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-
-label {
-  font-weight: bold;
-}
-
-button {
-  padding: 10px 15px;
-  background: #007bff;
+.app-header {
+  background-color: #1976d2;
   color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-button:hover {
-  background: #0056b3;
-} */
-
-/* Bookings List */
-.booking-card {
-  border: 1px solid #ddd;
-  padding: 15px;
-  margin-bottom: 10px;
-  border-radius: 6px;
-  background: #fafafa;
-}
-
-.booking-card h3 {
-  margin: 0 0 8px 0;
-}
-
-.success-msg {
-  color: green;
-  font-weight: bold;
-}
-
-.error-msg {
-  color: red;
-  font-weight: bold;
-}
-
-.seat-layout {
-  display: grid;
-  grid-template-columns: repeat(5, 60px);
-  gap: 10px;
-  justify-content: center;
-  margin-top: 20px;
-}
-
-.seat {
+  padding: 1rem 2rem;
+  font-size: 1.5rem;
+  font-weight: 600;
   text-align: center;
-  padding: 5px;
-  border-radius: 5px;
-  cursor: pointer;
-  background-color: #d4edda;
-  transition: transform 0.2s;
+  width: 100%;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
 }
 
-.seat svg {
-  font-size: 24px;
+/* Full-width content */
+.app-content {
+  flex: 1;
+  padding: 2rem;
+  width: 100%;
 }
 
-.seat.available { background-color: #d4edda; } /* Green */
-.seat.booked { background-color: #f8d7da; cursor: not-allowed; } /* Red */
-.seat.my-seat { background-color: #cce5ff; } /* Blue */
-
-.seat:hover {
-  transform: scale(1.1);
+/* Full-width footer */
+.app-footer {
+  background-color: #1976d2;
+  color: white;
+  text-align: center;
+  padding: 0.8rem;
+  font-size: 0.9rem;
+  width: 100%;
 }
-
