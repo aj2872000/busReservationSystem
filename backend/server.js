@@ -11,6 +11,7 @@ app.use(express.json());
 const DATA_DIR = path.join(__dirname);
 const BUSES_FILE = path.join(DATA_DIR, "buses.txt");
 const BOOKINGS_FILE = path.join(DATA_DIR, "bookings.txt");
+const USERS_FILE = path.join(DATA_DIR, "users.txt");
 const DELIM = "|";
 
 // Helper - read file into array of arrays (split by '|')
@@ -33,6 +34,29 @@ async function writeFileLines(filePath, rows) {
   await fs.writeFile(tmp, content, "utf8");
   await fs.rename(tmp, filePath);
 }
+
+app.post('/user', async (req, res) => {
+  const { name, mobile } = req.body || {};
+
+  if (!name || !mobile) {
+    return res.status(400).json({ message: 'Name and mobile are required' });
+  }
+
+  let users = await readFileLines(USERS_FILE);
+  let existingUser = users.find(u => u[1] === mobile);
+
+  if (existingUser) {
+    return res.json({name: existingUser[0], mobile: existingUser[1]});
+  }
+
+  //append user
+  const line = [String(name), String(mobile)].join(DELIM) + "\n";
+  await fs.appendFile(USERS_FILE, line, "utf8");
+
+  const newUser = { name, mobile };
+
+  res.json(newUser);
+});
 
 // GET /buses
 // returns list of buses with computed available seats & available_seat_numbers
@@ -58,8 +82,10 @@ app.get("/buses", async (req, res) => {
 
       // generate all seat numbers as strings from 1..total_seats
       const allSeats = Array.from({ length: total_seats }, (_, i) => String(i + 1));
-      const available_seat_numbers = allSeats.filter(s => !bookedSet.has(s));
-      const available_seats = available_seat_numbers.length;
+      const available_seat_numbers_array = allSeats.filter(s => !bookedSet.has(s));
+      const available_seat_numbers = allSeats
+      const available_seats = available_seat_numbers_array.length;
+      const booked_seats = Array(...bookedSet);
 
       return {
         bus_id,
@@ -69,7 +95,8 @@ app.get("/buses", async (req, res) => {
         time,
         total_seats,
         available_seats,
-        available_seat_numbers
+        available_seat_numbers,
+        booked_seats
       };
     });
 
@@ -82,10 +109,35 @@ app.get("/buses", async (req, res) => {
 
 // GET /bookings
 // returns array of bookings: [ [name, bus_id, seat_no], ... ]
-app.get("/bookings", async (req, res) => {
+app.post("/bookings", async (req, res) => {
   try {
+    const { mobile } = req.body || {};
+    if(!mobile){
+      return res.status(400).json({ error: "Missing user credentials" });
+    }
     const bookingRows = await readFileLines(BOOKINGS_FILE);
-    res.json(bookingRows);
+    const myBooking = {};
+    bookingRows?.map((booking) => {
+      const [ mobile_no, bus_id, seat_no ] = booking
+      if(mobile_no === mobile){
+        if (!myBooking[bus_id]) {
+           myBooking[bus_id] = {
+            myBookedSeats : [],
+            othersBookedSeats : []
+          };
+        }
+        myBooking[bus_id]["myBookedSeats"].push(seat_no);
+      }else{
+        if (!myBooking[bus_id]) {
+           myBooking[bus_id] = {
+            myBookedSeats : [],
+            othersBookedSeats : []
+          };
+        }
+        myBooking[bus_id]["othersBookedSeats"].push(seat_no);
+      }
+    })
+    res.json(myBooking);
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Failed to read bookings" });

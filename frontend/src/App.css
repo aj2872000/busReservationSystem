@@ -1,4 +1,4 @@
-/* Global Styles */
+/* Global Styles
 body {
   font-family: 'Segoe UI', Arial, sans-serif;
   background-color: #f4f7fb;
@@ -74,7 +74,7 @@ button {
 
 button:hover {
   background: #0056b3;
-}
+} */
 
 /* Bookings List */
 .booking-card {
@@ -98,3 +98,33 @@ button:hover {
   color: red;
   font-weight: bold;
 }
+
+.seat-layout {
+  display: grid;
+  grid-template-columns: repeat(5, 60px);
+  gap: 10px;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.seat {
+  text-align: center;
+  padding: 5px;
+  border-radius: 5px;
+  cursor: pointer;
+  background-color: #d4edda;
+  transition: transform 0.2s;
+}
+
+.seat svg {
+  font-size: 24px;
+}
+
+.seat.available { background-color: #d4edda; } /* Green */
+.seat.booked { background-color: #f8d7da; cursor: not-allowed; } /* Red */
+.seat.my-seat { background-color: #cce5ff; } /* Blue */
+
+.seat:hover {
+  transform: scale(1.1);
+}
+

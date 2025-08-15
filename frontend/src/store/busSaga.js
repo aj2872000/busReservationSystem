@@ -18,9 +18,9 @@ function* fetchBusesSaga() {
   }
 }
 
-function* fetchBookingsSaga() {
+function* fetchBookingsSaga(action) {
   try {
-    const res = yield call(axios.get, `${API_URL}/bookings`);
+    const res = yield call(axios.post, `${API_URL}/bookings`, action.payload);
     yield put(fetchBookingsSuccess(res.data));
   } catch (err) {
     yield put(fetchBookingsFailure(err.message));
@@ -29,10 +29,11 @@ function* fetchBookingsSaga() {
 
 function* bookTicketSaga(action) {
   try {
+    const { name } = action.payload
     yield call(axios.post, `${API_URL}/book`, action.payload);
     yield put(bookTicketSuccess());
     yield put(fetchBusesRequest());
-    yield put(fetchBookingsRequest());
+    yield put(fetchBookingsRequest({mobile:name}));
   } catch (err) {
     yield put(bookTicketFailure(err.response?.data?.error || err.message));
   }
@@ -40,10 +41,11 @@ function* bookTicketSaga(action) {
 
 function* cancelTicketSaga(action) {
   try {
+    const { name } = action.payload
     yield call(axios.post, `${API_URL}/cancel`, action.payload);
     yield put(cancelTicketSuccess());
     yield put(fetchBusesRequest());
-    yield put(fetchBookingsRequest());
+    yield put(fetchBookingsRequest({mobile:name}));
   } catch (err) {
     yield put(cancelTicketFailure(err.response?.data?.error || err.message));
   }
