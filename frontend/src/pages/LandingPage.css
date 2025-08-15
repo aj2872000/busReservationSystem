@@ -1,7 +1,7 @@
 .bus-section {
   padding: 2rem;
   background: #f8f9fa;
-  min-height: calc(100vh - 200px); /* adjust for header if needed */
+  min-height: calc(100vh - 200px);
 }
 
 .bus-section h2 {
